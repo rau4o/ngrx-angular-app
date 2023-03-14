@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {select, Store} from "@ngrx/store";
-import {registerAction} from "../../store/actions/register.action";
 import {Observable} from "rxjs";
-import {isSubmittingSelector, validationErrorsSelector} from "../../store/selectors";
-import {AppStateInterface} from "../../../shared/types/appState.interface";
-import {RegisterRequestInterface} from "../../types/registerRequest.interface";
-import {CurrentUserInterface} from "../../../shared/types/currentUser.interface";
 import {BackendErrorsInterface} from "../../../shared/types/backendErrors.interface";
+import {select, Store} from "@ngrx/store";
+import {AppStateInterface} from "../../../shared/types/appState.interface";
+import {isSubmittingSelector, validationErrorsSelector} from "../../store/selectors";
+import {LoginRequestInterface} from "../../types/loginRequest.interface";
+import {loginAction} from "../../store/actions/login.action";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   public form: FormGroup;
+
   public isSubmitting$: Observable<boolean>;
   public backendErrors$: Observable<BackendErrorsInterface | null>;
 
@@ -24,15 +24,14 @@ export class RegisterComponent implements OnInit {
               private store: Store<AppStateInterface>) { }
 
   ngOnInit(): void {
-    this.initializeForm();
     this.initializeValues();
+    this.initializeForm();
   }
 
   private initializeForm(): void {
     this.form = this.fb.group({
-      username: ['', [Validators.required]],
-      email: '',
-      password: ''
+      email: [''],
+      password: ['']
     })
   }
 
@@ -42,10 +41,9 @@ export class RegisterComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    const request: RegisterRequestInterface = {
+    const request: LoginRequestInterface = {
       user: this.form.value
     }
-    this.store.dispatch(registerAction({request}))
+    this.store.dispatch(loginAction({request}));
   }
-
 }
