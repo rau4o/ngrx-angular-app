@@ -12,24 +12,26 @@ import {EffectsModule} from "@ngrx/effects";
 import {TopBarModule} from "./shared/modules/topBar/topBar.module";
 import {PersistanceService} from "./shared/services/persistance.service";
 import {AuthInterceptor} from "./shared/services/authInterceptor.service";
+import {GlobalFeedModule} from "./globalFeed/globalFeed.module";
+import {routerReducer, StoreRouterConnectingModule} from "@ngrx/router-store";
 
 @NgModule({
-  declarations: [
-    AppComponent
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AuthModule,
+    HttpClientModule,
+    StoreModule.forRoot({router: routerReducer}),
+    StoreDevtoolsModule.instrument({
+        maxAge: 25,
+        logOnly: environment.production
+    }),
+    EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot(),
+    TopBarModule,
+    GlobalFeedModule
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        AuthModule,
-        HttpClientModule,
-        StoreModule.forRoot({}),
-        StoreDevtoolsModule.instrument({
-            maxAge: 25,
-            logOnly: environment.production
-        }),
-        EffectsModule.forRoot([]),
-        TopBarModule
-    ],
   providers: [
     PersistanceService,
     {
