@@ -16,12 +16,12 @@ export class GetFeedEffect {
          .pipe(
            map((feed: GetFeedResponseInterface) => {
              return getFeedSuccessAction({feed});
+           }),
+           catchError(() => {
+             return of(getFeedFailureAction);
            })
          )
      }),
-     catchError(() => {
-       return of(getFeedFailureAction);
-     })
    ))
 
   constructor(private action$: Actions,
